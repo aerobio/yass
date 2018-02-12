@@ -1,12 +1,6 @@
-
-from __future__ import print_function
-
 import numpy as np
-import time
-import unittest
 
-from solver import COMPLETE, ROWS, COLS, SQUARES, solve
-
+from yass.solver import COMPLETE, ROWS, COLS, SQUARES
 
 a = [[0, 0, 0,  2, 0, 0,  0, 1, 0],
      [0, 9, 0,  0, 0, 0,  4, 0, 0],
@@ -100,7 +94,7 @@ ones = [
 
 
 ALL_BOARDS = (a, b, c, z, vdsp1, hardest, ones)
-EXPECTED = (True, True, True, True, True, True, False)
+SOLVABLE = (True, True, True, True, True, True, False)
 
 
 def is_complete(board):
@@ -111,28 +105,3 @@ def is_complete(board):
            all(set(board[r,:]) == COMPLETE for r in ROWS) and \
            all(set(board[:,c]) == COMPLETE for c in COLS) and \
            all(all(set(board[r:r + 3, c:c + 3].flat) == COMPLETE for c in SQUARES) for r in SQUARES)
-
-
-class TestSolver2(unittest.TestCase):
-
-    def test_validity(self):
-        for board, expected in zip(ALL_BOARDS, EXPECTED):
-            print(board)
-            s = solve(board)
-            print(s)
-            print()
-            if expected:
-                self.assertTrue(s is not None and is_complete(s))
-            else:
-                self.assertIsNone(s)
-
-    def test_speed(self):
-        t0 = time.time()
-        for test in ALL_BOARDS:
-            repetitions = 10
-            for i in range(repetitions):
-                t = time.time()
-                s = solve(test)
-                self.assertTrue(s is None or is_complete(s))
-                print("Time (ms)", 1000 / repetitions * (time.time() - t))
-        print("Total time (s)", time.time() - t0)
