@@ -9,9 +9,12 @@ from yass.solver import solve
 
 
 def print_board(board):
-    for row in board:
-        print(row)
-    print()
+    if board is None:
+        print(board)
+    else:
+        for row in board:
+            print(row)
+        print()
 
 
 class TestSolver(unittest.TestCase):
